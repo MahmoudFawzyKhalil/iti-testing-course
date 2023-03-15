@@ -1,4 +1,4 @@
-package gov.iti.jets.testing1;
+package gov.iti.jets.testing;
 
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
