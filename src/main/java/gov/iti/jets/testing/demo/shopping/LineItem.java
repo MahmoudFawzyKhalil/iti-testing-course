@@ -1,4 +1,10 @@
 package gov.iti.jets.testing.demo.shopping;
 
-public record LineItem(Product product, int count) {
+public class LineItem {
+    public Product product;
+    public int count;
+
+    public void incrementCount() {
+        count++;
+    }
 }

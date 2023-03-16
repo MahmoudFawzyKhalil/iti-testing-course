@@ -9,21 +9,26 @@ import java.util.stream.Collectors;
 public class MessageFormatter {
     private List<String> messages = new ArrayList<>();
 
+
     public void addMessage(String message) {
         messages.add(message);
     }
 
     public String formatMessages() {
-        return messages.stream()
-                       .map(this::formatMessage)
-                       .collect(Collectors.joining("\n"));
+        String formatted = messages.stream()
+                .map( this::formatMessage )
+                .collect( Collectors.joining( "\n" ) );
+
+        messages.clear();
+
+        return formatted;
     }
 
     private String formatMessage(String message) {
         if (message.startsWith("*")) {
-            return message.toUpperCase();
+            return message.replace( "*", "" ).toUpperCase();
         } else if (message.startsWith("_")) {
-            return message.toLowerCase();
+            return message.replace( "_", "" ).toLowerCase();
         } else {
             return message;
         }
@@ -32,7 +37,9 @@ public class MessageFormatter {
     // Ignore this comment
     // Refactoring this is a pain because what if we want to disallow repeated messages and change it to a set?
     // Verifying unnecessarily the internal state
-    public List<String> getMessages() {
+
+    // The principle of least astonishment
+    public List<String> getMessagesUnmodifiable() {
         return Collections.unmodifiableList(messages);
     }
 }
