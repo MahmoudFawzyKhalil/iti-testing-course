@@ -1,0 +1,28 @@
+package gov.iti.jets.testing.day2.shopping.domain;
+
+
+import jakarta.persistence.Embeddable;
+
+@Embeddable
+public class LineItem {
+
+    private String productCode;
+
+    private int quantity;
+
+    protected LineItem() {
+    }
+
+    public LineItem(String productCode, int quantity) {
+        this.productCode = productCode;
+        this.quantity = quantity;
+    }
+
+    public String getProductCode() {
+        return productCode;
+    }
+
+    public int getQuantity() {
+        return quantity;
+    }
+}
