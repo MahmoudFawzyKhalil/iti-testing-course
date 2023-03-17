@@ -25,4 +25,12 @@ public class LineItem {
     public int getQuantity() {
         return quantity;
     }
+
+    @Override
+    public String toString() {
+        return "LineItem{" +
+               "productCode='" + productCode + '\'' +
+               ", quantity=" + quantity +
+               '}';
+    }
 }

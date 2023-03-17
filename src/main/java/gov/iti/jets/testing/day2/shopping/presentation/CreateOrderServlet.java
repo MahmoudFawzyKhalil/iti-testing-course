@@ -24,16 +24,16 @@ public class CreateOrderServlet extends HttpServlet {
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         ShoppingCart shoppingCart = SessionAttributes.SHOPPING_CART.get(req);
         Order order = orderService.createOrder(shoppingCart != null ? shoppingCart : createFakeShoppingCart());
-        ViewAttributes.CREATED_ORDER.set(req, order);
+        RequestAttributes.CREATED_ORDER.set(req, order);
         Jsps.VIEW_CREATED_ORDER.forward(req, resp);
     }
 
     private static ShoppingCart createFakeShoppingCart() {
-        ShoppingCart shoppingCart = new ShoppingCart(1L);
-        Database.doInTransactionWithoutResult(em -> UserDao.save(
-                                                      new User("Mahmoud", "011"), em
-                                              )
+        User user = new User("Mahmoud", "011");
+        Database.doInTransactionWithoutResult(em -> UserDao.save(user, em)
         );
+
+        ShoppingCart shoppingCart = new ShoppingCart(user.getId());
 
         shoppingCart.addProduct(new Product("Shampoo", 25_000));
 

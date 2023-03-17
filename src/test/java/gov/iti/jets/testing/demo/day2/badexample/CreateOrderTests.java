@@ -1,4 +1,4 @@
-package gov.iti.jets.testing.demo.day2.extensions.badexample;
+package gov.iti.jets.testing.demo.day2.badexample;
 
 import org.junit.jupiter.api.Test;
 

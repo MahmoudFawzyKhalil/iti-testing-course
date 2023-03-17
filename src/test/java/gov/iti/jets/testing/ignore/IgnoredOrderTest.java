@@ -7,10 +7,11 @@ import gov.iti.jets.testing.day2.shopping.domain.User;
 import gov.iti.jets.testing.day2.shopping.infrastructure.persistence.Database;
 import gov.iti.jets.testing.day2.shopping.infrastructure.persistence.ProductDao;
 import gov.iti.jets.testing.day2.shopping.infrastructure.persistence.UserDao;
+import gov.iti.jets.testing.demo.day2.extensions.DatabaseTest;
 import org.junit.jupiter.api.Test;
 
-import javax.xml.crypto.Data;
 
+@DatabaseTest
 class IgnoredOrderTest {
     @Test
     void test() {
