@@ -10,7 +10,8 @@ import gov.iti.jets.testing.day2.shopping.infrastructure.persistence.UserDao;
 
 public class OrderService {
 
-    private static final OrderService INSTANCE = new OrderService(SmsGateway.getInstance());
+    private static final OrderService INSTANCE =
+            new OrderService(SmsGateway.getInstance());
 
     private final SmsGateway smsGateway;
 
@@ -22,7 +23,6 @@ public class OrderService {
         // Business logic - unit test
         Order order = new Order(shoppingCart);
 
-        // Loan pattern, execute around pattern
         Database.doInTransactionWithoutResult(em -> {
             // Data wrangling - integration test
             OrderDao.save(order, em);
@@ -31,7 +31,9 @@ public class OrderService {
             User user = UserDao
                     .findUserById(order.getUserId(), em)
                     // Fail fast, not necessary to test
-                    .orElseThrow(() -> new IllegalStateException("Can't create order for non-existent user!"));
+                    .orElseThrow(() ->
+                            new IllegalStateException(
+                                    "Can't create order for non-existent user!"));
 
             // Business logic - unit test
             String smsMessage = order.createOrderCreatedSmsMessage();

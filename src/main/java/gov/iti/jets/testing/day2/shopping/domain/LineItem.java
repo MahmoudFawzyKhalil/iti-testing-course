@@ -8,6 +8,8 @@ public class LineItem {
 
     private String productCode;
 
+//    private int price;
+
     private int quantity;
 
     protected LineItem() {

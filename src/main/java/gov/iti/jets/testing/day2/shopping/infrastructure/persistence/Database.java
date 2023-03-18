@@ -11,10 +11,12 @@ public class Database {
     private Database() {
     }
 
+    // Spring's TransactionCallBack
     private static final EntityManagerFactory emf =
             Persistence.createEntityManagerFactory("testing_course");
 
-    public static <R> R doInTransaction(Function<EntityManager, R> returningTransactionFunction) {
+    public static <R> R doInTransaction(
+            Function<EntityManager, R> returningTransactionFunction) {
         var entityManager = emf.createEntityManager();
         var transaction = entityManager.getTransaction();
         transaction.begin();
@@ -30,7 +32,8 @@ public class Database {
         }
     }
 
-    public static void doInTransactionWithoutResult(Consumer<EntityManager> voidTransactionFunction) {
+    public static void doInTransactionWithoutResult(
+            Consumer<EntityManager> voidTransactionFunction) {
         var entityManager = emf.createEntityManager();
         var transaction = entityManager.getTransaction();
         transaction.begin();

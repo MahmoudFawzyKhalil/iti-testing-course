@@ -17,6 +17,10 @@ public class Order {
 
     public static final int MAX_QUANTITY = 10;
 
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+
     @Column(name = "user_id")
     // This @JoinColumn annotation is for documentation only, foreign key should be added using a database migration tool e.g. Flyway
     @JoinColumn(name = "user_id", table = "users", referencedColumnName = "id")
@@ -26,9 +30,6 @@ public class Order {
     @CollectionTable(name = "order_line_items")
     private Set<LineItem> lineItems;
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
 
     protected Order() {
     }
@@ -50,7 +51,7 @@ public class Order {
         }
     }
 
-    private void validateQuantities(Set<LineItem> lineItems) {
+    private static void validateQuantities(Set<LineItem> lineItems) {
         lineItems.stream()
                  .map(LineItem::getQuantity)
                  .filter(q -> q > MAX_QUANTITY)
@@ -73,6 +74,12 @@ public class Order {
     // The most terrible method in the world
     public static Order createOrder(ShoppingCart shoppingCart) {
         Order order = new Order(shoppingCart);
+
+        // Loan pattern
+        // EntityManager entityManager
+        // if exception -> Rollback
+        // if nothing happend -> commit
+        // close entitymanager
         Database.doInTransactionWithoutResult(em -> {
             OrderDao.save(order, em);
 
@@ -80,8 +87,10 @@ public class Order {
 
             User user = UserDao
                     .findUserById(order.getUserId(), em)
-                    .orElseThrow(() -> new IllegalStateException("Can't create order for non-existent user!"));
+                    .orElseThrow(() -> new IllegalStateException(
+                            "Can't create order for non-existent user!"));
 
+            // Implicit dependency, shared
             SmsGateway.getInstance().sendSms(user.getPhoneNumber(), smsMessage);
         });
         return order;

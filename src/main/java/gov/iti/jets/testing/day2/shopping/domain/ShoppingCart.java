@@ -11,13 +11,23 @@ public class ShoppingCart {
 
     private final Map<Product, Integer> productToQuantity = new HashMap<>();
 
+    public Map<Product, Integer> getProductToQuantity() {
+        return productToQuantity;
+    }
 
-    public ShoppingCart(Long userId) {
+    public ShoppingCart( Long userId) {
         this.userId = userId;
     }
 
     public void addProduct(Product product) {
         productToQuantity.merge(product, 1, Integer::sum);
+    }
+
+    // Needs to be maintained
+    // Not a business requirement
+    // Expose a wider API - external clients will depend on anything you make public
+    public boolean contains(Product product) {
+        return productToQuantity.containsKey( product );
     }
 
     /*package private*/ Set<LineItem> createLineItems() {

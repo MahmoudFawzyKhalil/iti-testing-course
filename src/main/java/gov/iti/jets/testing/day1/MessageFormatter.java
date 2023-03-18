@@ -7,11 +7,16 @@ import java.util.stream.Collectors;
 
 // TODO write test
 public class MessageFormatter {
-    private List<String> messages = new ArrayList<>();
+    private List<String> messages;
 
+    public MessageFormatter( List<String> messages ) {
+        this.messages = messages;
+    }
 
-    public void addMessage(String message) {
-        messages.add(message);
+    public void addMessage( String message ) {
+        messages.add( message );
+        System.out.println("Added message: " + messages.get( 0 ));
+        // REFACTORING
     }
 
     public String formatMessages() {
@@ -24,10 +29,10 @@ public class MessageFormatter {
         return formatted;
     }
 
-    private String formatMessage(String message) {
-        if (message.startsWith("*")) {
+    private String formatMessage( String message ) {
+        if (message.startsWith( "*" )) {
             return message.replace( "*", "" ).toUpperCase();
-        } else if (message.startsWith("_")) {
+        } else if (message.startsWith( "_" )) {
             return message.replace( "_", "" ).toLowerCase();
         } else {
             return message;
@@ -40,6 +45,6 @@ public class MessageFormatter {
 
     // The principle of least astonishment
     public List<String> getMessagesUnmodifiable() {
-        return Collections.unmodifiableList(messages);
+        return Collections.unmodifiableList( messages );
     }
 }

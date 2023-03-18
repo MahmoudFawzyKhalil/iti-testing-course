@@ -11,7 +11,11 @@ public enum Jsps {
 
     private final String path;
 
-    Jsps(String path) {
+    public String getPath() {
+        return path;
+    }
+
+    Jsps( String path) {
         this.path = path;
     }
 
