@@ -1,0 +1,18 @@
+package gov.iti.jets.testing.demo.day3;
+
+import gov.iti.jets.testing.day2.shopping.domain.Product;
+import gov.iti.jets.testing.day2.shopping.domain.ShoppingCart;
+
+import java.util.List;
+
+public class ShoppingCarts {
+
+    public static ShoppingCart randomShoppingCart( Long userId, List<Product> products ) {
+        ShoppingCart shoppingCart = ShoppingCart
+                .builder()
+                .userId( userId )
+                .build();
+        products.forEach( shoppingCart::addProduct );
+        return shoppingCart;
+    }
+}

@@ -1,9 +1,14 @@
 package gov.iti.jets.testing.day2.shopping.domain;
 
 import jakarta.persistence.*;
+import lombok.AccessLevel;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 
 @Entity
 @Table(name = "users")
+@Builder(toBuilder = true)
+@AllArgsConstructor(access = AccessLevel.PRIVATE)
 public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -13,7 +18,13 @@ public class User {
 
     private String phoneNumber;
 
-    public User(String name, String phoneNumber) {
+    private String role;
+
+    public void setRole( String role ) {
+        this.role = role;
+    }
+
+    public User( String name, String phoneNumber ) {
         this.name = name;
         this.phoneNumber = phoneNumber;
     }
@@ -32,4 +43,6 @@ public class User {
     public String getPhoneNumber() {
         return phoneNumber;
     }
+
+
 }

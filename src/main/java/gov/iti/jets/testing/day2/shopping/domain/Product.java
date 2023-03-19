@@ -1,11 +1,15 @@
 package gov.iti.jets.testing.day2.shopping.domain;
 
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 
 import java.util.Objects;
 
 @Entity
 @Table(name = "products")
+@Builder(toBuilder = true)
+@AllArgsConstructor
 public class Product {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

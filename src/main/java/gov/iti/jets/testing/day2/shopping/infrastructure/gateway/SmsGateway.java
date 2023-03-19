@@ -1,26 +1,52 @@
 package gov.iti.jets.testing.day2.shopping.infrastructure.gateway;
 
+import lombok.SneakyThrows;
+
+import java.net.URI;
+import java.net.http.HttpClient;
+import java.net.http.HttpRequest;
+import java.net.http.HttpResponse;
+
 public class SmsGateway {
 
-    private static final SmsGateway INSTANCE = new SmsGateway();
+    public static final String SMS_SERVICE_URL = "http://sms-service.com/api";
 
-    private SmsGateway() {
+    public static final String SEND_SMS_PATH = "/send";
+
+    private static final SmsGateway INSTANCE = new SmsGateway( SMS_SERVICE_URL );
+    private final String smsServiceUrl;
+
+    public SmsGateway( String smsServiceUrl ) {
+        this.smsServiceUrl = smsServiceUrl + SEND_SMS_PATH; // http://sms-service/api/send
     }
 
     public static SmsGateway getInstance() {
         return INSTANCE;
     }
 
-    public void sendSms(String phoneNumber, String message) {
-        // Takes a long time
-        // Sends an SMS to the actual phoneNumber
-        // Costs you money to send the SMS
-        try {
-            Thread.sleep(5_000);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
+    @SneakyThrows
+    public void sendSms( String phoneNumber, String message ) {
+        // Spring -> RestTemplate, WebClient
+        // OkHttp...
+        HttpClient httpClient = HttpClient.newHttpClient();
+        // Json libraries -> Jackson
+        String postBodyJson = """
+                {
+                "phoneNumber": "%s",
+                "message": "%s"
+                }
+                """
+                .formatted( phoneNumber, message );
 
-        System.out.println("Message {%s} sent to phone number %s".formatted(message, phoneNumber));
+        HttpRequest postRequest = HttpRequest
+                .newBuilder()
+                .POST( HttpRequest.BodyPublishers.ofString( postBodyJson ) )
+                .uri( URI.create( smsServiceUrl ) )
+                .build();
+
+        HttpResponse<String> response =
+                httpClient.send( postRequest, HttpResponse.BodyHandlers.ofString() );
+
+        System.out.println( response.body() );
     }
 }

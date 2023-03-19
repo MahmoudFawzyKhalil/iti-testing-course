@@ -5,6 +5,7 @@ import gov.iti.jets.testing.day2.shopping.infrastructure.persistence.Database;
 import gov.iti.jets.testing.day2.shopping.infrastructure.persistence.OrderDao;
 import gov.iti.jets.testing.day2.shopping.infrastructure.persistence.UserDao;
 import jakarta.persistence.*;
+import lombok.Builder;
 
 import java.util.Set;
 import java.util.stream.Collectors;

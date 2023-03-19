@@ -2,12 +2,13 @@ package gov.iti.jets.testing.demo.day2.extensions;
 
 import gov.iti.jets.testing.day2.shopping.infrastructure.persistence.Database;
 import jakarta.persistence.Query;
+import org.junit.jupiter.api.extension.AfterAllCallback;
 import org.junit.jupiter.api.extension.BeforeEachCallback;
 import org.junit.jupiter.api.extension.ExtensionContext;
 
 import java.util.List;
 
-public class DatabaseCleanupExtension implements BeforeEachCallback {
+public class DatabaseCleanupExtension implements BeforeEachCallback, AfterAllCallback {
 
     public static final List<String> DELETE_STATEMENTS =
             List.of("DELETE FROM users;",
@@ -26,5 +27,11 @@ public class DatabaseCleanupExtension implements BeforeEachCallback {
                                        .map(em::createNativeQuery)
                                        .forEach(Query::executeUpdate)
         );
+    }
+
+    @Override
+    // TODO make it after ALL tests in suite, not just in class
+    public void afterAll( ExtensionContext context ) throws Exception {
+        Database.close();
     }
 }

@@ -9,7 +9,7 @@ public enum SessionAttributes {
 
 
     public void set(HttpServletRequest req, Object value) {
-        req.setAttribute(this.name(), value);
+        req.getSession().setAttribute(this.name(), value);
     }
 
     @SuppressWarnings("unchecked")
