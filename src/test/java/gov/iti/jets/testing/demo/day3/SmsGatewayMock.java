@@ -1,6 +1,6 @@
 package gov.iti.jets.testing.demo.day3;
 
-import gov.iti.jets.testing.day2.shopping.infrastructure.gateway.SmsGateway;
+import gov.iti.jets.testing.infrastructure.gateway.SmsGateway;
 import org.mockito.Mockito;
 
 class SmsGatewayMock extends SmsGateway {

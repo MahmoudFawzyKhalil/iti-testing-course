@@ -1,15 +1,15 @@
 package gov.iti.jets.testing.demo.day3;
 
-import gov.iti.jets.testing.day2.shopping.domain.Order;
-import gov.iti.jets.testing.day2.shopping.domain.Product;
-import gov.iti.jets.testing.day2.shopping.domain.ShoppingCart;
-import gov.iti.jets.testing.day2.shopping.domain.User;
-import gov.iti.jets.testing.day2.shopping.infrastructure.gateway.SmsGateway;
-import gov.iti.jets.testing.day2.shopping.presentation.CreateOrderServlet;
-import gov.iti.jets.testing.day2.shopping.presentation.Jsps;
-import gov.iti.jets.testing.day2.shopping.presentation.RequestAttributes;
-import gov.iti.jets.testing.day2.shopping.presentation.SessionAttributes;
-import gov.iti.jets.testing.day2.shopping.service.OrderService;
+import gov.iti.jets.testing.domain.Order;
+import gov.iti.jets.testing.domain.Product;
+import gov.iti.jets.testing.domain.ShoppingCart;
+import gov.iti.jets.testing.domain.User;
+import gov.iti.jets.testing.infrastructure.gateway.SmsGateway;
+import gov.iti.jets.testing.presentation.CreateOrderServlet;
+import gov.iti.jets.testing.presentation.Jsps;
+import gov.iti.jets.testing.presentation.RequestAttributes;
+import gov.iti.jets.testing.presentation.SessionAttributes;
+import gov.iti.jets.testing.service.OrderService;
 import gov.iti.jets.testing.demo.day2.extensions.DatabaseTest;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Tag;

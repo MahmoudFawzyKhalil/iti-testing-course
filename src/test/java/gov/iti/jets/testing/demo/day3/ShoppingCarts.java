@@ -1,7 +1,7 @@
 package gov.iti.jets.testing.demo.day3;
 
-import gov.iti.jets.testing.day2.shopping.domain.Product;
-import gov.iti.jets.testing.day2.shopping.domain.ShoppingCart;
+import gov.iti.jets.testing.domain.Product;
+import gov.iti.jets.testing.domain.ShoppingCart;
 
 import java.util.List;
 

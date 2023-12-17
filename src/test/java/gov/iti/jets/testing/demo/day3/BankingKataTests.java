@@ -41,8 +41,7 @@ public class BankingKataTests {
     }
 
     private static Clock createFixedClock() {
-        Clock fixedClock = Clock.fixed( Instant.now(), ZoneId.systemDefault() );
-        return fixedClock;
+        return Clock.fixed( Instant.now(), ZoneId.systemDefault() );
     }
 
     private static int extractFirstBalance( String statement ) {

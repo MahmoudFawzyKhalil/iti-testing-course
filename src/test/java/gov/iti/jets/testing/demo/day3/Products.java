@@ -1,9 +1,7 @@
 package gov.iti.jets.testing.demo.day3;
 
 import com.github.javafaker.Faker;
-import gov.iti.jets.testing.day2.shopping.domain.Product;
-import org.apache.commons.lang3.RandomStringUtils;
-import org.apache.commons.lang3.RandomUtils;
+import gov.iti.jets.testing.domain.Product;
 
 import java.util.ArrayList;
 import java.util.List;

@@ -6,7 +6,7 @@
   To change this template use File | Settings | File Templates.
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java"
-         import="gov.iti.jets.testing.day2.shopping.presentation.RequestAttributes" %>
+         import="gov.iti.jets.testing.presentation.RequestAttributes" %>
 <html>
 <head>
     <title>Order created!</title>

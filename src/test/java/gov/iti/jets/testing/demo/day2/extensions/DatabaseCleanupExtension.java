@@ -1,14 +1,15 @@
 package gov.iti.jets.testing.demo.day2.extensions;
 
-import gov.iti.jets.testing.day2.shopping.infrastructure.persistence.Database;
+import gov.iti.jets.testing.infrastructure.persistence.Database;
 import jakarta.persistence.Query;
-import org.junit.jupiter.api.extension.AfterAllCallback;
 import org.junit.jupiter.api.extension.BeforeEachCallback;
 import org.junit.jupiter.api.extension.ExtensionContext;
 
 import java.util.List;
 
-public class DatabaseCleanupExtension implements BeforeEachCallback, AfterAllCallback {
+public class DatabaseCleanupExtension implements BeforeEachCallback, ExtensionContext.Store.CloseableResource {
+
+    static boolean registered = false;
 
     public static final List<String> DELETE_STATEMENTS =
             List.of("DELETE FROM users;",
@@ -17,21 +18,27 @@ public class DatabaseCleanupExtension implements BeforeEachCallback, AfterAllCal
                     "DELETE FROM orders;");
 
     @Override
-    public void beforeEach(ExtensionContext context) throws Exception {
+    public void beforeEach(ExtensionContext context) {
         clearDatabase();
+        if (!registered) {
+            context.getRoot()
+                    .getStore(ExtensionContext.Namespace.GLOBAL)
+                    .put(DatabaseCleanupExtension.class.getName(), this);
+            registered = true;
+        }
     }
 
     private static void clearDatabase() {
         Database.doInTransactionWithoutResult(
                 em -> DELETE_STATEMENTS.stream()
-                                       .map(em::createNativeQuery)
-                                       .forEach(Query::executeUpdate)
+                        .map(em::createNativeQuery)
+                        .forEach(Query::executeUpdate)
         );
     }
 
     @Override
-    // TODO make it after ALL tests in suite, not just in class
-    public void afterAll( ExtensionContext context ) throws Exception {
+    public void close() {
+        // Runs after ALL tests in test suite run
         Database.close();
     }
 }

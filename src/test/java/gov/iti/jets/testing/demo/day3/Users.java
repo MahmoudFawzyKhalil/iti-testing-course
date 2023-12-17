@@ -1,9 +1,9 @@
 package gov.iti.jets.testing.demo.day3;
 
 import com.github.javafaker.Faker;
-import gov.iti.jets.testing.day2.shopping.domain.User;
-import gov.iti.jets.testing.day2.shopping.infrastructure.persistence.Database;
-import gov.iti.jets.testing.day2.shopping.infrastructure.persistence.UserDao;
+import gov.iti.jets.testing.domain.User;
+import gov.iti.jets.testing.infrastructure.persistence.Database;
+import gov.iti.jets.testing.infrastructure.persistence.UserDao;
 
 public class Users {
     public static User randomUser() {
