@@ -1,7 +1,10 @@
 package gov.iti.jets.testing.demo.day2;
 
+import org.apache.hc.core5.annotation.Contract;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
+import org.springframework.lang.NonNull;
+import org.springframework.lang.Nullable;
 
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -18,11 +21,17 @@ public class PureFunctionTest {
 
     @Test
     void Divide_by_zero() {
-        int result = divide(5, 0);
+        var result = divide(5, 0);
+        result.byteValue();
     }
 
-    int divide(int a, int b) {
-        return a / b;
+    @Nullable
+    static Integer divide(@NonNull Integer a, @NonNull Integer b) {
+        try {
+            return a / b;
+        } catch (ArithmeticException e) {
+            return null;
+        }
     }
 
     // No hidden inputs

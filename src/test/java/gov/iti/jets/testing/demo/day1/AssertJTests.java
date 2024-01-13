@@ -60,15 +60,27 @@ class AssertJTests {
     }
 
     @Test
-    void softAssertions2() {
-        var softly = new SoftAssertions();
-        softly.assertThat("iti")
-                .hasSizeLessThan(1);
+    void softAssertions3() {
+        // Arrange
+        String s = "iti";
 
-        softly.assertThat("iti")
-                .isUpperCase();
-
+        // Act
+        // Assert
+        SoftAssertions softly = new SoftAssertions();
+        softly.assertThat(s).hasSize(2);
+        softly.assertThat(s).isUpperCase();
         softly.assertAll();
+    }
+
+    @Test
+    void softAssertions2() {
+        try (var softly = new AutoCloseableSoftAssertions()) {
+            softly.assertThat("iti")
+                    .hasSizeLessThan(1);
+
+            softly.assertThat("iti")
+                    .isUpperCase();
+        }
     }
 
 

@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 public class MessageFormatter {
+    private static final String NULL_MESSAGES_EXCEPTION_MESSAGE = "Null messages are not allowed at all";
     private final List<String> messages;
 
     public MessageFormatter() {
@@ -18,6 +19,9 @@ public class MessageFormatter {
 
     public void addMessage(String message) {
         messages.add(message);
+        if (message == null) {
+            throw new IllegalArgumentException(NULL_MESSAGES_EXCEPTION_MESSAGE);
+        }
         // System.out.println("Added message: " + messages.get(0));
         // This will cause an issue with Mockito later on
     }

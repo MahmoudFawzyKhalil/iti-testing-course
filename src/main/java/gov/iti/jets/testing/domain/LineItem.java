@@ -35,4 +35,8 @@ public class LineItem {
                ", quantity=" + quantity +
                '}';
     }
+
+    public void incrementQuantity() {
+        quantity++;
+    }
 }
