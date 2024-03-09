@@ -24,8 +24,8 @@ class RefactoredCreateOrderIntegrationTests extends AbstractServletTest {
     @Test
     void Order_is_created_servlet_refactored() {
         // Arrange
-        SmsGatewayMock smsGatewayMock = new SmsGatewayMock(); // 1
-        OrderService orderService = new OrderService( smsGatewayMock );
+        SmsGatewayFake smsGatewayFake = new SmsGatewayFake(); // 1
+        OrderService orderService = new OrderService(smsGatewayFake);
         CreateOrderServlet createOrderServlet = new CreateOrderServlet( orderService );
 
         User user = Users.save( Users.randomUser() );
@@ -45,7 +45,7 @@ class RefactoredCreateOrderIntegrationTests extends AbstractServletTest {
                 .usingRecursiveComparison()
                 .isEqualTo( createdOrder );
 
-        smsGatewayMock.verifySmsSent( user.getPhoneNumber(), createdOrder.createOrderCreatedSmsMessage() );
+        smsGatewayFake.verifySmsSent( user.getPhoneNumber(), createdOrder.createOrderCreatedSmsMessage() );
 
         assertForwardedTo( Jsps.VIEW_CREATED_ORDER.getPath() );
     }

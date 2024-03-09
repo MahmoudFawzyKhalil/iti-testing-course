@@ -2,8 +2,10 @@ package gov.iti.jets.testing.domain;
 
 
 import jakarta.persistence.Embeddable;
+import lombok.EqualsAndHashCode;
 
 @Embeddable
+@EqualsAndHashCode
 public class LineItem {
 
     private String productCode;

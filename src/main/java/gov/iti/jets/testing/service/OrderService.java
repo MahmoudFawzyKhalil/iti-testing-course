@@ -21,7 +21,7 @@ public class OrderService {
 
     public Order createOrder(ShoppingCart shoppingCart) {
         // Business logic - unit test
-        Order order = new Order(shoppingCart);
+        Order order = Order.of(shoppingCart);
 
         Database.doInTransactionWithoutResult(em -> {
             // Data wrangling - integration test

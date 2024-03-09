@@ -1,5 +1,6 @@
 package gov.iti.jets.testing.presentation;
 
+import gov.iti.jets.testing.domain.ShoppingCart;
 import jakarta.servlet.http.HttpServletRequest;
 
 public enum SessionAttributes {

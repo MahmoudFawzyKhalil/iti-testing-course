@@ -14,17 +14,11 @@ public class TimerExtension implements BeforeTestExecutionCallback, AfterTestExe
 
     @Override
     public void beforeTestExecution(ExtensionContext context) {
-//        if (!shouldBeBenchmarked(context))
-//            return;
-
         storeNowAsLaunchTime(context);
     }
 
     @Override
     public void afterTestExecution(ExtensionContext context) {
-//        if (!shouldBeBenchmarked(context))
-//            return;
-
         long launchTime = loadLaunchTime(context);
         long elapsedTime = currentTimeMillis() - launchTime;
         report(context, elapsedTime);

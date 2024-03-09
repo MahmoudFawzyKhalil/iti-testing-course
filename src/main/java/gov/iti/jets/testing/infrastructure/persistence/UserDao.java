@@ -10,7 +10,8 @@ public class UserDao {
         return Optional.ofNullable(em.find(User.class, userId));
     }
 
-    public static void save(User user, EntityManager em) {
+    public static User save(User user, EntityManager em) {
         em.persist(user);
+        return user;
     }
 }

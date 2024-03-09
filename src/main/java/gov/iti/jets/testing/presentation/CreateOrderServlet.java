@@ -30,8 +30,6 @@ public class CreateOrderServlet extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        // 1. start an in-memory servlet container
-        // 2. mock servlet request and response
         ShoppingCart shoppingCart = SessionAttributes.SHOPPING_CART.get(req);
 
         Order order = orderService.createOrder(shoppingCart);
@@ -39,17 +37,5 @@ public class CreateOrderServlet extends HttpServlet {
         RequestAttributes.CREATED_ORDER.set(req, order);
 
         Jsps.VIEW_CREATED_ORDER.forward(req, resp);
-    }
-
-    private static ShoppingCart createFakeShoppingCart() {
-        User user = new User("Mahmoud", "011");
-        Database.doInTransactionWithoutResult(em -> UserDao.save(user, em)
-        );
-
-        ShoppingCart shoppingCart = new ShoppingCart(user.getId());
-
-        shoppingCart.addProduct(new Product("Shampoo", 25_000));
-
-        return shoppingCart;
     }
 }

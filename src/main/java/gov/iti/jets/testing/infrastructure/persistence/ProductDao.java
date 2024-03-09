@@ -5,7 +5,8 @@ import jakarta.persistence.EntityManager;
 
 public class ProductDao {
 
-    public static void save(Product product, EntityManager em) {
+    public static Product save(Product product, EntityManager em) {
         em.persist(product);
+        return product;
     }
 }

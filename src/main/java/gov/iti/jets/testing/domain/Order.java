@@ -6,12 +6,14 @@ import gov.iti.jets.testing.infrastructure.persistence.OrderDao;
 import gov.iti.jets.testing.infrastructure.persistence.UserDao;
 import jakarta.persistence.*;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 import java.util.Set;
 import java.util.stream.Collectors;
 
 @Entity(name = "order")
 @Table(name = "orders")
+@NoArgsConstructor
 public class Order {
 
     public static final int ORDER_MINIMUM = 10_000;
@@ -28,15 +30,20 @@ public class Order {
     @JoinColumn(name = "user_id", table = "users", referencedColumnName = "id")
     private Long userId;
 
+    @Getter
     @ElementCollection
     @CollectionTable(name = "order_line_items")
     private Set<LineItem> lineItems;
 
 
-    protected Order() {
+    public static Order of(User userById, ShoppingCart shoppingCart) {
+        if (userById == null) {
+            throw new IllegalArgumentException("User is required");
+        }
+        return of(shoppingCart);
     }
 
-    public Order(ShoppingCart shoppingCart) {
+    private Order(ShoppingCart shoppingCart) {
         Set<LineItem> lineItems = shoppingCart.createLineItems();
 
         validateTotal(shoppingCart.calculateTotal());
@@ -66,23 +73,27 @@ public class Order {
     }
 
     // TODO 010 four quadrants, write test, refactor to service and domain, write unit and integration tests
-    // The most terrible method in the world
     public static Order createOrder(ShoppingCart shoppingCart) {
-        Order order = new Order(shoppingCart);
+        Order order = of(shoppingCart);
+
         Database.doInTransactionWithoutResult(em -> {
             OrderDao.save(order, em);
 
-            String smsMessage = order.createOrderCreatedSmsMessage();
 
             User user = UserDao
                     .findUserById(order.getUserId(), em)
                     .orElseThrow(() -> new IllegalStateException(
                             "Can't create order for non-existent user!"));
 
+            String smsMessage = order.createOrderCreatedSmsMessage();
             // Implicit dependency, shared
             SmsGateway.getInstance().sendSms(user.getPhoneNumber(), smsMessage);
         });
         return order;
+    }
+
+    public static Order of(ShoppingCart shoppingCart) {
+        return new Order(shoppingCart);
     }
 
     public String createOrderCreatedSmsMessage() {

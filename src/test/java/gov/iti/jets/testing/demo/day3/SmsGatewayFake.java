@@ -3,11 +3,11 @@ package gov.iti.jets.testing.demo.day3;
 import gov.iti.jets.testing.infrastructure.gateway.SmsGateway;
 import org.mockito.Mockito;
 
-class SmsGatewayMock extends SmsGateway {
+public class SmsGatewayFake extends SmsGateway {
 
     private final SmsGateway internalMock = Mockito.mock();
 
-    SmsGatewayMock() {
+    public SmsGatewayFake() {
         super( "doesn't matter" );
     }
 

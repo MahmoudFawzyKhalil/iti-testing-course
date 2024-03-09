@@ -3,19 +3,12 @@ package gov.iti.jets.testing.demo.day1;
 import gov.iti.jets.testing.domain.MessageFormatter;
 import org.approvaltests.Approvals;
 import org.assertj.core.api.Assertions;
-import org.assertj.core.api.SoftAssertionsProvider;
-import org.assertj.core.api.SoftAssertionsProvider.ThrowingRunnable;
-import org.assertj.core.api.ThrowableAssert;
-import org.assertj.core.api.ThrowableAssert.ThrowingCallable;
-import org.assertj.core.api.ThrowingConsumer;
 import org.junit.jupiter.api.*;
 import org.junit.jupiter.api.io.TempDir;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
-import org.junit.jupiter.params.provider.ValueSource;
 
 import java.io.File;
-import java.util.List;
 
 @Fast
 @DisplayNameGeneration(DisplayNameGenerator.ReplaceUnderscores.class)
@@ -32,6 +25,7 @@ class MessageFormatterTests {
 //    void init() {
 //        messageFormatter = new MessageFormatter();
 //    }
+
 
     @Test
     //    v v v v v // coupled to implementation
@@ -152,9 +146,10 @@ class MessageFormatterTests {
     }
 
     @Test
+    @Disabled("Requirements changed")
     void Add_message_accepts_a_message_using_approval_testing() {
         // Arrange
-        MessageFormatter messageFormatter = createMessageFormatter();
+        MessageFormatter messageFormatter = new MessageFormatter();
         String expectedMessage = "Hello";
 
         // Act
@@ -162,6 +157,9 @@ class MessageFormatterTests {
 
         // Assert
         // Characterization test
+//        Assertions.assertThat(messageFormatter.getMessagesUnmodifiable())
+//                        .containsExactly("hamada");
+        // output -> testcase.received.txt -> testcase.approved.txt
         Approvals.verify(messageFormatter.getMessagesUnmodifiable());
     }
 }

@@ -1,5 +1,6 @@
 package gov.iti.jets.testing.demo.day2;
 
+import gov.iti.jets.testing.demo.day3.SmsGatewayFake;
 import gov.iti.jets.testing.domain.Order;
 import gov.iti.jets.testing.domain.Product;
 import gov.iti.jets.testing.domain.ShoppingCart;
@@ -38,39 +39,39 @@ docker run -d \
 class OrderServiceTests {
 
     // TODO 013 integration test from from service layer
-    @Test
-    void Order_is_created() {
-        // Arrange
-        SmsGateway smsGatewayMock = Mockito.mock();
-        OrderService orderService = new OrderService(smsGatewayMock);
-
-        User user = Users.save(Users.defaultRegularUser());
-        List<Product> products = List.of(new Product("123", 15_000),
-                new Product("343", 10_000)
-        );
-        ShoppingCart shoppingCart = createShoppingCart(user.getId(), products);
-
-        // Act
-        Order order = orderService.createOrder(shoppingCart);
-
-        // Assert
-        // 1. Saved to the database
-        List<Order> allOrders = Database.doInTransaction(em -> {
-            return em.createQuery("SELECT o FROM order o JOIN FETCH o.lineItems", Order.class)
-                    .getResultList();
-        });
-
-        Assertions.assertThat(allOrders.get(0))
-                .usingRecursiveComparison()
-                .isEqualTo(order);
-
-        // 2. SMS service called
-        // Delta coverage
-        Mockito.verify(smsGatewayMock).sendSms(
-                user.getPhoneNumber(),
-                order.createOrderCreatedSmsMessage());
-        Mockito.verifyNoMoreInteractions(smsGatewayMock);
-    }
+//    @Test
+//    void Order_is_created() {
+//        // Arrange
+//        SmsGateway smsGatewayMock = Mockito.mock();
+//        OrderService orderService = new OrderService(smsGatewayMock);
+//
+//        User user = Users.save(Users.defaultRegularUser());
+//        List<Product> products = List.of(new Product("123", 15_000),
+//                new Product("343", 10_000)
+//        );
+//        ShoppingCart shoppingCart = createShoppingCart(user.getId(), products);
+//
+//        // Act
+//        Order order = orderService.createOrder(shoppingCart);
+//
+//        // Assert
+//        // 1. Saved to the database
+//        List<Order> allOrders = Database.doInTransaction(em -> {
+//            return em.createQuery("SELECT o FROM order o JOIN FETCH o.lineItems", Order.class)
+//                    .getResultList();
+//        });
+//
+//        Assertions.assertThat(allOrders.get(0))
+//                .usingRecursiveComparison()
+//                .isEqualTo(order);
+//
+//        // 2. SMS service called
+//        // Delta coverage
+//        Mockito.verify(smsGatewayMock).sendSms(
+//                user.getPhoneNumber(),
+//                order.createOrderCreatedSmsMessage());
+//        Mockito.verifyNoMoreInteractions(smsGatewayMock);
+//    }
 
     private static ShoppingCart createShoppingCart(Long userId, List<Product> products) {
         ShoppingCart shoppingCart = new ShoppingCart(userId);
@@ -88,7 +89,7 @@ class OrderServiceTests {
         CreateOrderServlet createOrderServlet =
                 new CreateOrderServlet(orderService);
 
-        User user = Users.save(Users.defaultRegularUser());
+        User user = Users.save(Users.defaultRegularUser().build());
 
         ShoppingCart shoppingCart = createShoppingCart(user.getId(), Products.randomProducts());
 
@@ -97,8 +98,8 @@ class OrderServiceTests {
 
         var mockRequest = new MockHttpServletRequest();
         mockRequest.setSession(mockSession);
-        var mockResponse = new MockHttpServletResponse();
         mockRequest.setMethod("GET"); // GET for demo only, should be POST
+        var mockResponse = new MockHttpServletResponse();
 
         // Act
         createOrderServlet.service(mockRequest, mockResponse);
@@ -132,16 +133,14 @@ class OrderServiceTests {
         public static final String DEFAULT_USER_NAME = "Mahmoud";
         public static final String DEFAULT_USER_PHONE_NUMBER = "011793535353";
 
-        public static User defaultRegularUser() {
+        public static User.UserBuilder defaultRegularUser() {
             return User.builder()
                     .name(DEFAULT_USER_NAME)
-                    .phoneNumber(DEFAULT_USER_PHONE_NUMBER)
-                    .build();
+                    .phoneNumber(DEFAULT_USER_PHONE_NUMBER);
         }
 
         public static User defaultAdminUser() {
             return defaultRegularUser()
-                    .toBuilder()
                     .role("ADMIN")
                     .build();
         }
